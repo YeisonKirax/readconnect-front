@@ -1,0 +1,8 @@
+.book-img {
+    width: 200px;
+    justify-content: center;
+}
+
+.card-height {
+    min-height: 40vh;
+}
