@@ -1,0 +1,44 @@
+'use client';
+import React, { useEffect, useState } from 'react';
+import { Author } from '@/lib/authors/definitions/definitions';
+import { getAuthorById } from '@/lib/authors/services/authors-service';
+import BooksCarrousel from '@/app/books/[id]/components/books-carrousel/books-carrousel';
+
+type Props = {
+	authorId: string;
+};
+const RelatedBooks: React.FC<Props> = ({ authorId }: Props) => {
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(false);
+	const [author, setAuthor] = useState<Author>({ books: [], id: '', name: '' });
+
+	useEffect(() => {
+		getAuthorById(authorId)
+			.then((res) => {
+				setLoading(false);
+				setAuthor(res);
+			})
+			.catch((e) => {
+				setLoading(false);
+				setError(true);
+			});
+	}, [authorId]);
+	if (error) {
+		return (
+			<div className="flex flex-col items-center">
+				<div className="card border">
+					<div className="card-body">
+						<h2 className="card-title">Ocurrió un error en su petición.</h2>
+					</div>
+				</div>
+			</div>
+		);
+	}
+	return (
+		<div>
+			<h3 className="text-lg font-bold">Libros del author: {author.name}</h3>
+			<BooksCarrousel books={author.books ?? []}></BooksCarrousel>
+		</div>
+	);
+};
+export default RelatedBooks;

@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 import React from 'react';
 import { montserrat } from '@/app/fonts/google';
+import Header from '@/components/header/header';
+import Footer from '@/components/footer/footer';
+import SessionAuthProvider from '@/context/session-auth-provider';
 
 export const metadata: Metadata = {
 	title: 'Create Next App',
@@ -10,8 +13,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
-			<body className={montserrat.className}>{children}</body>
+		<html lang="en" data-theme="valentine">
+			<body className={montserrat.className}>
+				<SessionAuthProvider>
+					<div className="base-100 flex min-h-screen w-full flex-col overflow-x-auto">
+						<Header></Header>
+						<div className="divider mt-12"></div>
+						{children}
+						<div className="divider mt-12"></div>
+						<Footer></Footer>
+					</div>
+				</SessionAuthProvider>
+			</body>
 		</html>
 	);
 }
